@@ -1,0 +1,69 @@
+/* WATCH GT5 适配：466x466 物理圆屏
+ * 布局按物理像素设计，全部关键内容落在圆安全区内：
+ *   info-bar   y 55..95   （宽 300 内安全，标题短文本居中）
+ *   content    y 97..362  （正文列 336px 宽，首行弦宽 378+ 安全）
+ *   side-btn   y 170..310 （x 17..53 / 413..449，四角均在圆内）
+ *   btn-row    y 364..412 （行宽 294，底部弦宽 ~298 安全，不切角） */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    left: 0px;
+    top: 0px;
+    width: 466px;
+    height: 466px;
+    background-color: black;
+    padding-bottom: 56px;
+}
+
+.info-bar {
+    font-size: 28px;
+    color: #888888;
+    text-align: center;
+    width: 466px;
+    height: 40px;
+    background-color: black;
+}
+
+.content-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 466px;
+    height: 265px;
+}
+
+.side-btn {
+    width: 36px;
+    height: 140px;
+    font-size: 22px;
+    background-color: #1a1a1a;
+    color: #555555;
+}
+
+.title {
+    font-size: 28px;
+    color: #ffffff;
+    text-align: center;
+    width: 336px;
+    height: 265px;
+}
+
+.btn-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 294px;
+    height: 48px;
+    margin-top: 2px;
+}
+
+.btn {
+    width: 86px;
+    height: 48px;
+    font-size: 24px;
+    background-color: #333333;
+}

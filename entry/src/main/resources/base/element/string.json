@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "TXT reader"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "read TXT novels on watch"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "TXTreader"
+    }
+  ]
+}
