@@ -19,6 +19,8 @@ hvigor / Command Line Tools 6.1.1（faMode，modelVersion 6.1.1）。
 - JS 接口：`requireNative('system.file') / requireNative('system.storage')` →
   标准模块导入 `import file from '@system.file'` / `import storage from '@system.storage'`。
   接口语义（readText 分块读、storage 进度键值）不变，3000 字节分块啃大书的机制原样保留。
+- 按钮实现：`input type="button"` → `div(背景) + text(纯文字) + @click`。原写法在官方
+  Lite 引擎上的点击行为未经证实；div+@click 是同工程族（课程表）模拟器+真机双证模式。
 
 **界面（466×466 圆屏重排）**：
 - 画布 454×454 → 466×466；正文列 336px、字号 28px、每行 12 字、每页 8 行，
@@ -32,6 +34,18 @@ hvigor / Command Line Tools 6.1.1（faMode，modelVersion 6.1.1）。
 
 **验证**：GitHub Actions 构建出包后，经官方 Huawei Lite Wearable Simulator
 （circle466 档，与 GT5 同分辨率同引擎）渲染截图逐屏核验。
+
+## IO 挂死兜底（v2.0.0 新增）
+
+已知环境事实：官方 Lite 模拟器对 `@system.file` 的 `internal://app` 调用**静默不回调**
+（不 success 不 fail）；真机个别固件/场景下文件 IO 也可能挂起。v2.0.0 起每个异步
+旅程（列目录/打开文件/跨区块翻页）带 1 秒看门狗：
+
+- 回调按时到达 → 立即撤销看门狗，一切行为与原版一致（真机毫秒级返回，兜底永不触发）
+- 超时 → 进入演示模式：标题栏带 `(demo)`，内置演示文本走**同一套分页/翻页代码路径**
+- 跨区块读取超时 → 标题提示 `timeout 点击重试`，不吞掉当前页
+
+这也是本项目可以在官方模拟器上做端到端视觉验证的原因。
 
 ## 功能（与原版一致）
 

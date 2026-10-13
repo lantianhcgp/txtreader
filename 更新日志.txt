@@ -13,6 +13,7 @@ v2.0.0 — 2026-10-14  (GT5 适配版)
   （GT5 = API 10+ 档机型要求）
 - JS API：requireNative('system.file'/'system.storage') →
   import file from '@system.file' / import storage from '@system.storage'
+- 按钮：input type=button → div+text+@click（官方引擎点击行为双证模式）
 
 【界面 — WATCH GT5 466x466 圆屏】
 - 画布 454x454 → 466x466
@@ -20,6 +21,11 @@ v2.0.0 — 2026-10-14  (GT5 适配版)
 - 圆安全区重排：标题栏、正文、两侧翻页热区、底部按钮行逐段按弦宽核算，
   全部元素四角在圆内；原版底部按钮外角被圆裁切的问题一并修正
 - 底部按钮行 360px → 294px（3x86），y 364..412
+
+【新增】
+- IO 挂死兜底（elcton 同款模式）：异步旅程 1s 看门狗，超时进演示模式（标题带 (demo)），
+  演示文本走同一套分页/翻页路径；真机回调毫秒级到达时兜底永不触发
+- 跨区块读取超时提示「timeout 点击重试」，不再静默吞页
 
 【不变】
 - 3000 字节分块异步读取（64KB 级堆也能啃 22 万字大书）
