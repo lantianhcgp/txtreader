@@ -53,6 +53,15 @@ function armFB(g, fire) {
     }, 1000);
 }
 
+// 圆屏标题安全：总长 ≤21 ASCII 字符（y60..87 弦宽 ~310px），超长标签保尾部
+function browseTitle() {
+    var suf = demoMode ? ' (demo)' : '';
+    var budget = 21 - 'Browse: '.length - suf.length;
+    var d = curLabel;
+    if (d.length > budget) d = '...' + d.substring(d.length - (budget - 3));
+    return 'Browse: ' + d + suf;
+}
+
 function alive(g) {
     return g === gen;
 }
@@ -207,11 +216,12 @@ export default {
         var self = this;
         var g = beginJourney();
         curPath = path; curLabel = label || '/';
-        self.title = 'Browse: ' + curLabel;
+        self.title = browseTitle();
         armFB(g, function () {
             console.info('TX FB browse fire');
+            demoMode = true;
             entries = [{ type: 'file', uri: 'demo.txt' }];
-            self.title = 'Browse: ' + curLabel + ' (demo)';
+            self.title = browseTitle();
             self.text = '[file] demo.txt';
         });
         file.list({
@@ -235,7 +245,7 @@ export default {
                 cancelFB();
                 demoMode = true;
                 entries = [{ type: 'file', uri: 'demo.txt' }];
-                self.title = 'Browse: ' + curLabel + ' (demo)';
+                self.title = browseTitle();
                 self.text = '[file] demo.txt';
             }
         });
