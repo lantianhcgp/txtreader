@@ -46,6 +46,7 @@ function beginJourney() {
 function armFB(g, fire) {
     fbTimer = setTimeout(function () {
         if (g !== gen) return;
+        console.info('TX FB fired');
         demoMode = true;
         fbTimer = null;
         fire();
@@ -104,6 +105,7 @@ function saveProgress() {
 
 // 演示模式整本装载（演示文本 < 3000B，一区块读完，eof 置位）
 function loadDemo(self) {
+    console.info('TX demo load');
     reading = true;
     fileName = '';
     pages = buildPages(DEMO_TEXT);
@@ -128,6 +130,7 @@ function loadChunk(self, pos, restorePg, g) {
         position: pos,
         length: CHUNK_SIZE,
         success: function (rr) {
+            console.info('TX rc ok len=' + (rr.text ? rr.text.length : 0));
             if (!alive(g)) return;
             cancelFB();
             loadingChunk = false;
@@ -142,6 +145,7 @@ function loadChunk(self, pos, restorePg, g) {
             saveProgress();
         },
         fail: function (e, c) {
+            console.info('TX rc fail ' + c);
             if (!alive(g)) return;
             cancelFB();
             loadingChunk = false;
@@ -155,6 +159,7 @@ function restoreProgress(self, g) {
     storage.get({
         key: STORAGE_KEY + '_' + fileName,
         success: function (data) {
+            console.info('TX sget ' + (data ? 'data' : 'empty'));
             if (!alive(g)) return;
             cancelFB();
             if (data) {
@@ -182,7 +187,7 @@ function restoreProgress(self, g) {
             }
             loadChunk(self, 0, 0, g);
         },
-        fail: function () { if (!alive(g)) return; loadChunk(self, 0, 0, g); }
+        fail: function () { console.info('TX sget fail'); if (!alive(g)) return; loadChunk(self, 0, 0, g); }
     });
 }
 
@@ -203,6 +208,7 @@ export default {
         curPath = path; curLabel = label || '/';
         self.title = 'Browse: ' + curLabel;
         armFB(g, function () {
+            console.info('TX FB browse fire');
             entries = [{ type: 'file', uri: 'demo.txt' }];
             self.title = 'Browse: ' + curLabel + ' (demo)';
             self.text = '[file] demo.txt';
@@ -210,6 +216,7 @@ export default {
         file.list({
             uri: path,
             success: function (lr) {
+                console.info('TX list ok n=' + (lr.fileList ? lr.fileList.length : -1) + ' first=' + (lr.fileList && lr.fileList.length ? lr.fileList[0].type + ':' + lr.fileList[0].uri : '-'));
                 if (!alive(g)) return;
                 cancelFB();
                 entries = lr.fileList || [];
@@ -221,7 +228,7 @@ export default {
                 }
                 self.text = lines.length > 0 ? lines.join('\n') : '(empty)';
             },
-            fail: function (e, c) { if (!alive(g)) return; cancelFB(); self.text = 'list err: ' + c; }
+            fail: function (e, c) { console.info('TX list fail ' + c); if (!alive(g)) return; cancelFB(); self.text = 'list err: ' + c; }
         });
     },
 
@@ -246,6 +253,7 @@ export default {
             }
             return;
         }
+        console.info('TX next n=' + entries.length);
         if (entries.length === 0) return;
         var first = entries[0];
         var newPath = curPath + '/' + first.uri;
