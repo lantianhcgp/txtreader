@@ -1,0 +1,38 @@
+TXTreader for WATCH GT5 — 更新日志
+===================================
+
+v2.0.0 — 2026-10-14  (GT5 适配版)
+------------------------------------
+
+【迁移】
+- 构建链：DevEco 3.1 Gradle（hap 3.1.5.0 / compileSdkVersion 5）→
+  hvigor / CLT 6.1.1（faMode，modelVersion 6.1.1），GitHub Actions 一键出包
+- config.json：迁移为 hvigor FA 形态（abilities .MainAbility +
+  srcLanguage/srcPath），版本 2.0.0
+- SDK 声明：compatibleSdkVersion 4.0.0(10) + targetSdkVersion 6.1.1(24)
+  （GT5 = API 10+ 档机型要求）
+- JS API：requireNative('system.file'/'system.storage') →
+  import file from '@system.file' / import storage from '@system.storage'
+
+【界面 — WATCH GT5 466x466 圆屏】
+- 画布 454x454 → 466x466
+- 正文列 336px / 字号 28px / 12 字一行 / 8 行一页（96 字/页，密度同原版）
+- 圆安全区重排：标题栏、正文、两侧翻页热区、底部按钮行逐段按弦宽核算，
+  全部元素四角在圆内；原版底部按钮外角被圆裁切的问题一并修正
+- 底部按钮行 360px → 294px（3x86），y 364..412
+
+【不变】
+- 3000 字节分块异步读取（64KB 级堆也能啃 22 万字大书）
+- 进度记忆 prevChunkStart:pg:charPos，每 5 页自动保存，换书自动清零
+- 目录浏览 / 侧边+底部双翻页 / Reset 双态
+- v1.1.0 的全部竞态修复（loadingChunk 互斥、999 末页裁剪、不等长分页等）
+
+v1.1.0 — 2026-07-31（GT2 Pro 原版）
+--------------------
+（见原版说明：图标、状态栏页码、每 5 页记忆、进度格式升级、
+区块竞态修复、8 行分页优化等）
+
+v1.0.0 — 2026-07-30（GT2 Pro 原版）
+--------------------
+- 初始版本：rawfile 真实文件系统读取、3000 字节分块、自适应分页、
+  进度持久化、目录浏览、触控+按键双翻页、UTF-8
