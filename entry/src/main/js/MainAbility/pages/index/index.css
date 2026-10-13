@@ -1,9 +1,11 @@
-/* WATCH GT5 适配：466x466 物理圆屏
- * 布局按物理像素设计，全部关键内容落在圆安全区内：
- *   info-bar   y 55..95   （宽 300 内安全，标题短文本居中）
- *   content    y 97..362  （正文列 336px 宽，首行弦宽 378+ 安全）
- *   side-btn   y 170..310 （x 17..53 / 413..449，四角均在圆内）
- *   btn-row    y 364..412 （行宽 294，底部弦宽 ~298 安全，不切角） */
+/* WATCH GT5 适配：466x466 物理圆屏（1 CSS px = 1 屏幕 px，官方模拟器实证）
+ * 布局全部落在圆安全区内（按弦宽逐段核算 + 模拟器帧逐像素复核）：
+ *   info-bar   y 55..95
+ *   content    y 95..360  正文列 336px（12 字 x 28px），首行弦宽 380+
+ *   side-btn   y 157..296 （x 17..53 / 413..449，四角在圆内）
+ *   btn-row    y 362..410 （行宽 294，实测最远点距圆心 219.7 < 233）
+ * 按钮一律 div(背景)+text(纯文字) 结构：input type=button 在新 Lite 引擎
+ * 上点击行为未经证实，div+@click 是同工程族（课程表 elcton）模拟器+真机双证模式 */
 .container {
     display: flex;
     flex-direction: column;
@@ -36,11 +38,17 @@
 }
 
 .side-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 36px;
     height: 140px;
-    font-size: 22px;
     background-color: #1a1a1a;
-    color: #555555;
+}
+
+.side-arrow {
+    font-size: 22px;
+    color: #666666;
 }
 
 .title {
@@ -62,8 +70,15 @@
 }
 
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 86px;
     height: 48px;
-    font-size: 24px;
     background-color: #333333;
+}
+
+.btn-label {
+    font-size: 24px;
+    color: #ffffff;
 }

@@ -1,13 +1,23 @@
 <div class="container">
     <text class="info-bar">{{ title }}</text>
     <div class="content-row">
-        <input type="button" class="side-btn" value="<" onclick="goPrev"/>
+        <div class="side-btn" @click="goPrev">
+            <text class="side-arrow">&#x3C;</text>
+        </div>
         <text class="title">{{ text }}</text>
-        <input type="button" class="side-btn" value=">" onclick="goNext"/>
+        <div class="side-btn" @click="goNext">
+            <text class="side-arrow">&#x3E;</text>
+        </div>
     </div>
     <div class="btn-row">
-        <input type="button" class="btn" value="Prev" onclick="goPrev"/>
-        <input type="button" class="btn" value="Next" onclick="goNext"/>
-        <input type="button" class="btn" value="Reset" onclick="resetPage"/>
+        <div class="btn" @click="goPrev">
+            <text class="btn-label">Prev</text>
+        </div>
+        <div class="btn" @click="goNext">
+            <text class="btn-label">Next</text>
+        </div>
+        <div class="btn" @click="resetPage">
+            <text class="btn-label">Reset</text>
+        </div>
     </div>
 </div>
