@@ -145,12 +145,13 @@ function loadChunk(self, pos, restorePg, g) {
             saveProgress();
         },
         fail: function (e, c) {
-            console.info('TX rc fail ' + c);
+            console.info('TX rc fail ' + c + (pos > 0 ? ' eof' : ' demo'));
             if (!alive(g)) return;
             cancelFB();
             loadingChunk = false;
             if (pos > 0) { eof = true; self.showPage(); return; }
-            self.text = 'read err: ' + c;
+            demoMode = true;
+            loadDemo(self);
         }
     });
 }
@@ -228,7 +229,15 @@ export default {
                 }
                 self.text = lines.length > 0 ? lines.join('\n') : '(empty)';
             },
-            fail: function (e, c) { console.info('TX list fail ' + c); if (!alive(g)) return; cancelFB(); self.text = 'list err: ' + c; }
+            fail: function (e, c) {
+                console.info('TX list fail ' + c + ' -> demo');
+                if (!alive(g)) return;
+                cancelFB();
+                demoMode = true;
+                entries = [{ type: 'file', uri: 'demo.txt' }];
+                self.title = 'Browse: ' + curLabel + ' (demo)';
+                self.text = '[file] demo.txt';
+            }
         });
     },
 
